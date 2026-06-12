@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="admin-layout">
+    <!-- Sidebar -->
+    <aside class="admin-sidebar">
+        <div class="sidebar-brand">
+            <i class="bi bi-box-seam-fill"></i>
+            <span>Mi Catálogo</span>
+        </div>
+
+        <ul class="sidebar-menu">
+            <li>
+                <a th:href="@{/admin/dashboard}" class="sidebar-link" th:classappend="${activePage == 'dashboard'} ? 'active'">
+                    <i class="bi bi-grid-1x2-fill"></i> <span>Dashboard</span>
+                </a>
+            </li>
+            <li>
+                <a th:href="@{/admin/productos}" class="sidebar-link" th:classappend="${activePage == 'productos'} ? 'active'">
+                    <i class="bi bi-bag-fill"></i> <span>Productos</span>
+                </a>
+            </li>
+            <li>
+                <a th:href="@{/admin/categorias}" class="sidebar-link" th:classappend="${activePage == 'categorias'} ? 'active'">
+                    <i class="bi bi-tags-fill"></i> <span>Categorías</span>
+                </a>
+            </li>
+
+            <!-- Separador Visual -->
+            <li style="margin-top: 2rem; border-top: 1px solid #e2e8f0; padding-top: 1rem;"></li>
+
+            <!-- Cerrar Sesión -->
+            <li>
+                <form th:action="@{/logout}" method="post" style="width: 100%; margin: 0;">
+                    <button type="submit" class="sidebar-link" style="background: none; border: none; cursor: pointer; width: 100%; color: #ef4444; text-align: left;">
+                        <i class="bi bi-box-arrow-left"></i> <span>Cerrar Sesión</span>
+                    </button>
+                </form>
+            </li>
+        </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="admin-main">
+        <div class="admin-header">
+            <div>
+                <h1 class="admin-title">Panel de Control</h1>
+                <p class="text-muted small mb-0">Resumen general de tu catálogo</p>
+            </div>
+            <form th:action="@{/logout}" method="post">
+                <button type="submit" class="btn-logout-admin">
+                    <i class="bi bi-box-arrow-right"></i> Salir
+                </button>
+            </form>
+        </div>
+
+        <!-- Grid de Estadísticas -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <div class="stat-label">Total Productos</div>
+                        <div class="stat-value" th:text="${totalProductos}">0</div>
+                    </div>
+                    <div class="stat-icon" style="background: #eff6ff; color: var(--primary);"><i class="bi bi-box-seam-fill"></i></div>
+                </div>
+                <small class="text-muted mt-2 d-block">En base de datos</small>
+            </div>
+
+            <div class="stat-card">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <div class="stat-label">Visibles al Público</div>
+                        <div class="stat-value text-success" th:text="${productosActivos}">0</div>
+                    </div>
+                    <div class="stat-icon" style="background: #dcfce7; color: #166534;"><i class="bi bi-eye-fill"></i></div>
+                </div>
+                <small class="text-muted mt-2 d-block" th:text="${productosInactivos} + ' ocultos'">0 ocultos</small>
+            </div>
+
+            <div class="stat-card">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <div class="stat-label">Categorías Activas</div>
+                        <div class="stat-value" th:text="${categoriasUsadas}">0</div>
+                    </div>
+                    <div class="stat-icon" style="background: #f3e8ff; color: #6b21a8;"><i class="bi bi-tags-fill"></i></div>
+                </div>
+                <small class="text-muted mt-2 d-block">Con productos asignados</small>
+            </div>
+
+            <div class="stat-card">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <div class="stat-label">Valor Catálogo</div>
+                        <div class="stat-value" th:text="${valorInventario}">S/ 0</div>
+                    </div>
+                    <!-- CAMBIADO: bi-currency-dollar POR bi-cash-coin -->
+                    <div class="stat-icon" style="background: #fef3c7; color: #92400e;">
+                        <i class="bi bi-cash-coin"></i>
+                    </div>
+                </div>
+                <small class="text-muted mt-2 d-block">Suma de precios base</small>
+            </div>
+        </div>
+
+        <!-- Tarjeta de Configuración de Imagen del Negocio -->
+        <!-- Tarjeta de Configuración de Imagen del Negocio -->
+        <div class="card border-0 shadow-sm rounded-4 p-4 mt-4">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="fw-bold mb-0"><i class="bi bi-shop me-2"></i>Imagen Principal del Negocio</h5>
+
+                <!-- Mensaje de Éxito -->
+                <div th:if="${param.success}" class="alert alert-success py-1 px-3 small mb-0 fw-semibold border-0 bg-opacity-25">
+                    <i class="bi bi-check-circle-fill"></i> ¡Foto actualizada!
+                </div>
+            </div>
+
+            <p class="text-muted small mb-3">Esta foto aparecerá en la portada (Index) de tu catálogo público.</p>
+
+            <form th:action="@{/admin/ajustes/guardar-foto}" method="post" enctype="multipart/form-data" class="d-flex gap-2 align-items-end flex-wrap">
+                <div class="flex-grow-1" style="min-width: 200px;">
+                    <label class="form-label fw-semibold small">Subir nueva foto</label>
+                    <input type="file" id="inputFoto" name="fotoNegocio" class="form-control form-control-sm" accept="image/*">
+                </div>
+                <button type="submit" class="btn btn-primary btn-sm py-2 px-3 fw-semibold">Actualizar Portada</button>
+            </form>
+
+            <!-- Contenedor de Vista Previa Inteligente -->
+            <!-- Contenedor de Vista Previa Limpio -->
+            <div class="mt-3" id="containerPreview" th:style="${fotoActual == null} ? 'display:none;'">
+                <small class="text-muted d-block mb-2 fw-semibold">Vista previa actual:</small>
+
+                <!-- Única imagen: Muestra la de BD o la seleccionada localmente -->
+                <img th:src="${fotoActual}"
+                     id="previewImg"
+                     class="rounded-3 shadow-sm bg-white"
+                     style="height: 120px; width: auto; max-width: 100%; object-fit: contain; border: 1px solid #e2e8f0; display: block;">
+            </div>
+        </div>
+
+
+
+
+        <!-- Sección de Actividad Reciente -->
+        <div class="card border-0 shadow-sm rounded-4 p-4 mt-4">
+            <h5 class="fw-bold mb-3"><i class="bi bi-clock-history me-2"></i>Última Actividad</h5>
+
+            <div th:if="${ultimoProducto != null}" class="d-flex align-items-center p-3 bg-light rounded-3">
+                <img th:src="${ultimoProducto.imagenUrl}" class="rounded-3 me-3" style="width: 60px; height: 60px; object-fit: cover;" alt="Ultimo">
+                <div class="flex-grow-1">
+                    <h6 class="mb-1 fw-bold" th:text="${ultimoProducto.nombre}">Nombre Producto</h6>
+                    <p class="mb-0 text-muted small" th:text="'Agregado el ' + ${#temporals.format(ultimoProducto.fechaCreacion, 'dd/MM/yyyy HH:mm')}">Fecha</p>
+                </div>
+                <div class="text-end">
+                    <span class="badge bg-primary rounded-pill" th:text="'S/ ' + ${#numbers.formatDecimal(ultimoProducto.precio, 1, 2)}">Precio</span>
+                </div>
+            </div>
+
+            <div th:if="${ultimoProducto == null}" class="text-center py-4 text-muted">
+                <i class="bi bi-inbox fs-1 d-block mb-2"></i>
+                <p>Aún no hay productos registrados</p>
+                <a th:href="@{/admin/productos/nuevo}" class="btn-magic text-decoration-none py-2 px-4 mt-2">
+                    <i class="bi bi-plus-lg"></i> Crear primero
+                </a>
+            </div>
+        </div>
+    </main>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Script para Vista Previa Instantánea -->
+<!-- Script Mejorado para Persistencia -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const input = document.getElementById('inputFoto');
+        const img = document.getElementById('previewImg');
+        const container = document.getElementById('containerPreview');
+
+        // Al seleccionar archivo: Mostrar preview local inmediatamente
+        input.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    // Aseguramos que el contenedor sea visible
+                    container.style.display = 'block';
+
+                    // Cambiamos la fuente de la imagen
+                    img.src = e.target.result;
+                    img.style.display = 'block';
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+    });
+</script>
+</body>
+</html>

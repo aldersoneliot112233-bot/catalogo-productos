@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${titulo} ?: 'Detalle'">Producto</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <style>
+        .detalle-img-container { border-radius: var(--radius-xl); overflow: hidden; box-shadow: var(--shadow-soft); background: white; display: flex; align-items: center; justify-content: center; min-height: 400px; }
+        .detalle-img { width: 100%; height: auto; max-height: 500px; object-fit: contain; transition: opacity 0.3s ease; }
+        .thumb-gallery img { cursor: pointer; border: 2px solid transparent; transition: all 0.2s; border-radius: 12px; background: white; }
+        .thumb-gallery img:hover, .thumb-gallery img.active { border-color: var(--primary); transform: scale(1.05); }
+        .precio-grande { font-size: 2.5rem; font-weight: 900; color: var(--primary); line-height: 1; white-space: nowrap; }
+        .stock-badge { display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 50px; font-size: 0.85rem; font-weight: 700; }
+        .stock-ok { background: #dcfce7; color: #166534; }
+        .stock-low { background: #fef3c7; color: #92400e; }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-glass">
+    <div class="container">
+        <a class="navbar-brand" th:href="@{/}">🛍️ Mi Catálogo</a>
+        <div class="collapse navbar-collapse justify-content-end">
+            <ul class="navbar-nav gap-2">
+                <li class="nav-item"><a class="nav-link nav-link-custom" th:href="@{/catalogo}">Catálogo</a></li>
+                <li class="nav-item"><a class="nav-link nav-link-custom" th:href="@{/login}">Ingresar</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<section class="py-5 mt-4">
+    <div class="container">
+        <nav aria-label="breadcrumb" class="mb-4">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a th:href="@{/}" class="text-decoration-none text-muted">Inicio</a></li>
+                <li class="breadcrumb-item"><a th:href="@{/catalogo}" class="text-decoration-none text-muted">Catálogo</a></li>
+                <li class="breadcrumb-item active" th:text="${producto.nombre}">Producto</li>
+            </ol>
+        </nav>
+
+        <div class="row g-5">
+            <!-- Columna Izquierda: Imágenes -->
+            <div class="col-lg-6">
+                <!-- Contenedor Grande -->
+                <div class="detalle-img-container mb-3 position-relative" style="min-height: 450px;">
+                    <img th:src="${producto.imagenUrl}" id="mainImage" class="detalle-img" alt="Principal">
+                </div>
+
+                <!-- Miniaturas (Unificamos Principal + Extras) -->
+                <div class="thumb-gallery d-flex gap-2 overflow-auto pb-2">
+                    <!-- Miniatura de la Imagen Principal -->
+                    <div class="thumb-item active" onclick="changeMainImage(this)">
+                        <img th:src="${producto.imagenUrl}" style="width: 80px; height: 80px; object-fit: contain; padding: 5px; border: 2px solid var(--primary); border-radius: 12px; background: white;">
+                    </div>
+
+                    <!-- Miniaturas de las Extras -->
+                    <div th:each="img : ${producto.imagenesAdicionales}" class="thumb-item" onclick="changeMainImage(this)">
+                        <img th:src="${img.url}" style="width: 80px; height: 80px; object-fit: contain; padding: 5px; border: 2px solid transparent; border-radius: 12px; background: white;">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Columna Derecha: Info -->
+            <div class="col-lg-6 d-flex flex-column justify-content-center">
+                <span class="badge bg-secondary rounded-pill mb-3 px-3 py-2 align-self-start" th:text="${producto.categoria.nombre}">Categoría</span>
+                <h1 class="fw-bold mb-3 display-5" th:text="${producto.nombre}">Nombre</h1>
+                <div class="precio-grande mb-4" th:text="'S/ ' + ${#numbers.formatDecimal(producto.precio, 1, 2)}">S/ 0.00</div>
+
+                <div class="mb-4">
+                    <span th:if="${producto.stock > 10}" class="stock-badge stock-ok"><i class="bi bi-check-circle-fill"></i> En Stock</span>
+                    <span th:if="${producto.stock > 0 and producto.stock <= 10}" class="stock-badge stock-low"><i class="bi bi-exclamation-triangle-fill"></i> ¡Últimas <span th:text="${producto.stock}">0</span>!</span>
+                    <span th:if="${producto.stock == 0}" class="stock-badge stock-out"><i class="bi bi-x-circle-fill"></i> Agotado</span>
+                </div>
+
+                <div class="mb-4">
+                    <h5 class="fw-bold mb-2">Descripción</h5>
+                    <p class="text-muted lh-lg" th:text="${producto.descripcion} ?: 'Sin descripción disponible.'">Desc...</p>
+                </div>
+
+                <a th:href="@{/catalogo}" class="btn btn-outline-secondary rounded-pill px-4 py-3 fw-semibold align-self-start">← Volver al catálogo</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Relacionados -->
+<section class="py-5 bg-white" th:if="${!#lists.isEmpty(relacionados)}">
+    <div class="container">
+        <h3 class="fw-bold mb-4">También te puede interesar</h3>
+        <div class="row g-4">
+            <div class="col-md-4" th:each="rel : ${relacionados}">
+                <div class="product-card-premium h-100">
+                    <div class="card-img-container">
+                        <img th:src="${rel.imagenUrl}" class="product-img" alt="Rel">
+                    </div>
+                    <div class="card-body-premium">
+                        <h6 class="card-title-modern" th:text="${rel.nombre}">Nom</h6>
+                        <div class="d-flex justify-content-between align-items-center mt-2">
+                            <span class="product-price" style="font-size: 1.1rem;" th:text="'S/ ' + ${#numbers.formatDecimal(rel.precio, 1, 2)}">S/ 0</span>
+                            <a th:href="@{/producto/{id}(id=${rel.id})}" class="btn btn-action btn-sm">Ver</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer class="text-center py-4 text-muted small">&copy;  2026 Desarrollado por Ronaldo  | Inventario & Catálogo</footer>
+
+<script>
+    function changeMainImage(src) {
+        const main = document.getElementById('mainImage');
+        main.style.opacity = '0';
+        setTimeout(() => {
+            main.src = src;
+            main.style.opacity = '1';
+        }, 200);
+    }
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Script Mejorado para Efecto Carrusel -->
+<script>
+    function changeMainImage(thumbnailDiv) {
+        const mainImg = document.getElementById('mainImage');
+        const newSrc = thumbnailDiv.querySelector('img').src;
+
+        // 1. Efecto de desvanecimiento suave
+        mainImg.style.opacity = '0';
+
+        setTimeout(() => {
+            // 2. Cambiar la fuente de la imagen grande
+            mainImg.src = newSrc;
+            mainImg.style.opacity = '1';
+
+            // 3. Actualizar bordes de las miniaturas
+            document.querySelectorAll('.thumb-item').forEach(item => {
+                item.querySelector('img').style.borderColor = 'transparent';
+                item.classList.remove('active');
+            });
+
+            // 4. Resaltar la miniatura seleccionada
+            thumbnailDiv.querySelector('img').style.borderColor = 'var(--primary)';
+            thumbnailDiv.classList.add('active');
+
+            // 5. Hacer scroll automático a la miniatura activa (útil en móvil)
+            thumbnailDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+
+        }, 200);
+    }
+</script>
+</body>
+</html>

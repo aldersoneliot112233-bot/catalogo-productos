@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${titulo} ?: 'Catálogo'">Catálogo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<!-- Navbar Glass -->
+<nav class="navbar navbar-expand-lg navbar-glass">
+    <div class="container">
+        <a class="navbar-brand" th:href="@{/}">🛍️ Mi Catálogo</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navCat">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end" id="navCat">
+            <ul class="navbar-nav gap-2">
+                <li class="nav-item"><a class="nav-link nav-link-custom active" th:href="@{/catalogo}">Catálogo</a></li>
+                <li class="nav-item"><a class="nav-link nav-link-custom" th:href="@{/login}">Ingresar</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<section class="catalogo-section">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold display-6">Nuestros Productos</h2>
+
+            <!-- Formulario de Búsqueda + Filtro por Categoría -->
+            <form th:action="@{/catalogo}" method="get" class="search-glass mt-4">
+                <!-- En templates/public/catalogo.html -->
+                <input type="text" name="busqueda" th:value="${busqueda}"
+                       class="search-input-clean flex-grow-1"
+                       placeholder="Busca por nombre, nombres alternativos o características...">
+
+                <select name="categoriaId" class="filter-select-modern">
+                    <option value="">Todas las categorías</option>
+                    <option th:each="cat : ${categorias}"
+                            th:value="${cat.id}"
+                            th:text="${cat.nombre}"
+                            th:selected="${categoriaId == cat.id}">Categoría</option>
+                </select>
+
+                <button type="submit" class="btn-filter-capsule">Filtrar</button>
+            </form>
+        </div>
+
+        <!-- Grid de Productos Reales -->
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-4" th:each="prod : ${productos}">
+                <div class="product-card-premium">
+                    <div class="card-img-container">
+                        <img th:src="${prod.imagenUrl}" class="product-img" alt="Producto">
+                        <span class="card-badge-float" th:text="${prod.categoria.nombre}">Categoría</span>
+                    </div>
+                    <div class="card-body-premium">
+                        <h5 class="card-title-modern" th:text="${prod.nombre}">Nombre Producto</h5>
+                        <!-- REEMPLAZA LA LÍNEA DEL STOCK POR ESTA -->
+                        <p class="text-muted small mb-3"
+                           th:text="${#strings.abbreviate(prod.descripcion, 60)} ?: 'Ver detalles del producto...'">
+                            Descripción breve del producto...
+                        </p>
+
+                        <div class="d-flex justify-content-between align-items-center mt-auto">
+                            <!-- El white-space: nowrap en CSS evita que se parta -->
+                            <span class="product-price" th:text="'S/ ' + ${#numbers.formatDecimal(prod.precio, 1, 2)}">S/ 0.00</span>
+                            <a th:href="@{/producto/{id}(id=${prod.id})}" class="btn btn-action">Ver Detalle</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Estado Vacío -->
+        <div th:if="${#lists.isEmpty(productos)}" class="text-center py-5">
+            <i class="bi bi-search fs-1 text-muted d-block mb-3"></i>
+            <p class="text-muted fs-5">No encontramos productos con esos criterios</p>
+            <a th:href="@{/catalogo}" class="btn-magic text-decoration-none mt-3">Ver todo el catálogo</a>
+        </div>
+    </div>
+</section>
+
+<footer class="text-center py-4 text-muted small mt-5">
+    &copy;  2026 Desarrollado por Ronaldo  | Inventario & Catálogo
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

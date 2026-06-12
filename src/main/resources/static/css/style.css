@@ -1,0 +1,877 @@
+/* =========================================
+   CONFIGURACIÓN GLOBAL (CORREGIDA)
+   ========================================= */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700;900&display=swap');
+
+:root {
+    --primary: #6366f1;
+    --primary-dark: #4f46e5;
+    --accent: #ec4899;
+    --dark: #0f172a;
+    /* UNIFICAMOS EL FONDO BASE PARA EVITAR FRANJAS EN CELULAR */
+    --bg-base: #f8fafc;
+    --glass: rgba(255, 255, 255, 0.85);
+    --glass-border: rgba(255, 255, 255, 0.5);
+    --shadow-soft: 0 10px 40px -10px rgba(0,0,0,0.08);
+    --radius-xl: 24px;
+    --radius-md: 16px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Outfit', sans-serif;
+    background-color: var(--bg-base); /* Fondo único para toda la app */
+    color: var(--dark);
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+}
+
+/* =========================================
+   NAVBAR FLOTANTE (GLASSMORPHISM)
+   ========================================= */
+.navbar-glass {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 1000;
+    background: var(--glass);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--glass-border);
+    padding: 1rem 0;
+    transition: all 0.3s ease;
+}
+
+.navbar-brand {
+    font-weight: 900;
+    font-size: 1.5rem;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: -1px;
+}
+
+.nav-link-custom {
+    font-weight: 600;
+    color: var(--dark) !important;
+    padding: 0.5rem 1.2rem !important;
+    border-radius: 50px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.nav-link-custom:hover, .nav-link-custom.active {
+    background: var(--primary);
+    color: white !important;
+    transform: scale(1.05);
+    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+}
+
+/* =========================================
+   HERO SECTION (IMPACTO VISUAL)
+   ========================================= */
+.hero-container {
+    padding-top: 120px;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Fondo decorativo animado */
+.hero-bg-blob {
+    position: absolute;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(99,102,241,0.15) 0%, rgba(236,72,153,0.1) 100%);
+    border-radius: 50%;
+    filter: blur(60px);
+    z-index: -1;
+    animation: floatBlob 10s infinite alternate ease-in-out;
+}
+
+@keyframes floatBlob {
+    0% { transform: translate(-20%, -20%) scale(1); }
+    100% { transform: translate(20%, 20%) scale(1.2); }
+}
+
+.hero-title {
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    font-weight: 900;
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+    letter-spacing: -2px;
+}
+
+.hero-subtitle {
+    font-size: 1.2rem;
+    color: #64748b;
+    margin-bottom: 2.5rem;
+    max-width: 500px;
+}
+
+.btn-magic {
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    color: white;
+    border: none;
+    padding: 1rem 2.5rem;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 1.1rem;
+    box-shadow: 0 10px 30px -5px rgba(99, 102, 241, 0.5);
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.btn-magic:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 20px 40px -5px rgba(99, 102, 241, 0.6);
+}
+
+.hero-img-wrapper {
+    position: relative;
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    box-shadow: var(--shadow-soft);
+    transform: perspective(1000px) rotateY(-5deg) rotateX(5deg);
+    transition: transform 0.5s ease;
+}
+
+.hero-img-wrapper:hover {
+    transform: perspective(1000px) rotateY(0) rotateX(0);
+}
+
+.hero-img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    display: block;
+}
+
+/* =========================================
+   CATÁLOGO (TARJETAS PREMIUM)
+   ========================================= */
+.catalogo-section {
+    padding: 100px 0 50px;
+}
+
+.search-glass {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 50px;
+    padding: 0.8rem 1.5rem;
+    box-shadow: var(--shadow-soft);
+    transition: all 0.3s ease;
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto 3rem;
+    display: flex;
+    align-items: center;
+}
+
+.search-glass:focus-within {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+    transform: scale(1.02);
+}
+
+.search-input-clean {
+    border: none;
+    outline: none;
+    width: 100%;
+    font-size: 1.1rem;
+    font-family: 'Outfit', sans-serif;
+    background: transparent;
+}
+
+.product-card-premium {
+    background: white;
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    border: none;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    height: 100%;
+    position: relative;
+}
+
+.product-card-premium:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+}
+
+.card-img-container {
+    height: 250px;
+    overflow: hidden;
+    position: relative;
+}
+
+.card-img-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s ease;
+}
+
+.product-card-premium:hover .card-img-container img {
+    transform: scale(1.15);
+}
+
+.card-badge-float {
+    position: absolute;
+    top: 15px; left: 15px;
+    background: rgba(255,255,255,0.95);
+    padding: 6px 14px;
+    border-radius: 50px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--dark);
+    backdrop-filter: blur(4px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.card-body-premium {
+    padding: 1.5rem;
+}
+
+.card-title-modern {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: var(--dark);
+}
+
+.card-price-tag {
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: var(--primary);
+    margin-bottom: 1rem;
+}
+
+.btn-action {
+    width: 100%;
+    padding: 0.8rem;
+    border-radius: 12px;
+    font-weight: 600;
+    border: 2px solid var(--light);
+    background: var(--light);
+    color: var(--dark);
+    transition: all 0.3s ease;
+}
+
+.product-card-premium:hover .btn-action {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: white;
+}
+
+/* =========================================
+   LOGIN (CENTRADO Y LIMPIO)
+   ========================================= */
+.login-screen {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #f0fdfa 0%, #fff 100%);
+    padding: 20px;
+}
+
+.login-box {
+    background: white;
+    padding: 3rem;
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-soft);
+    width: 100%;
+    max-width: 450px;
+    border: 1px solid rgba(0,0,0,0.05);
+}
+
+.input-modern {
+    background: var(--light);
+    border: 2px solid transparent;
+    border-radius: 12px;
+    padding: 1rem;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+.input-modern:focus {
+    background: white;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+    outline: none;
+}
+
+/* =========================================
+   RESPONSIVE (CELULAR PRIMERO)
+   ========================================= */
+@media (max-width: 991px) {
+    .hero-container {
+        flex-direction: column-reverse;
+        text-align: center;
+        padding-top: 100px;
+    }
+
+    .hero-subtitle { margin: 0 auto 2rem; }
+
+    .hero-img-wrapper {
+        transform: none;
+        margin-bottom: 3rem;
+        max-width: 80%;
+    }
+
+    .navbar-collapse {
+        background: white;
+        padding: 1rem;
+        border-radius: var(--radius-md);
+        margin-top: 1rem;
+        box-shadow: var(--shadow-soft);
+    }
+}
+
+@media (max-width: 576px) {
+    .hero-title { font-size: 2.5rem; }
+
+    .product-card-premium { margin-bottom: 1.5rem; }
+
+    .login-box { padding: 2rem 1.5rem; }
+
+    .search-glass { margin: 0 1rem 2rem; }
+
+    /* Ajustes para touch en móvil */
+    .btn-magic, .btn-action, .nav-link-custom {
+        min-height: 48px; /* Área táctil óptima */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+
+/* =========================================
+   PANEL ADMIN (CORREGIDO PARA MÓVIL)
+   ========================================= */
+.admin-layout {
+    display: flex;
+    min-height: 100vh;
+    background-color: var(--bg-base); /* MISMO COLOR QUE EL BODY */
+    position: relative;
+}
+
+/* Sidebar Lateral */
+.admin-sidebar {
+    width: 260px;
+    background: white; /* Blanco puro para diferenciar del fondo */
+    border-right: 1px solid #e2e8f0;
+    padding: 2rem 1.5rem;
+    position: fixed;
+    height: 100vh;
+    overflow-y: auto;
+    z-index: 100;
+    transition: all 0.3s ease;
+}
+
+.sidebar-brand {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: var(--primary);
+    margin-bottom: 3rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.sidebar-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0.875rem 1rem;
+    color: #64748b;
+    text-decoration: none;
+    border-radius: 12px;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    transition: all 0.2s ease;
+}
+
+.sidebar-link:hover, .sidebar-link.active {
+    background-color: #eff6ff;
+    color: var(--primary);
+    transform: translateX(5px);
+}
+
+.sidebar-link i {
+    font-size: 1.2rem;
+}
+
+/* Contenido Principal Admin */
+.admin-main {
+    flex: 1;
+    margin-left: 260px;
+    padding: 2.5rem;
+    min-height: 100vh;
+    background-color: var(--bg-base); /* ASEGURA QUE NO HAYA TRANSPARENCIAS */
+}
+
+.admin-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2.5rem;
+}
+
+.admin-title {
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: var(--dark);
+}
+
+.btn-logout-admin {
+    background: white;
+    border: 1px solid #e2e8f0;
+    color: #ef4444;
+    padding: 0.6rem 1.2rem;
+    border-radius: 10px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.btn-logout-admin:hover {
+    background: #fef2f2;
+    border-color: #fecaca;
+}
+
+/* Tarjetas de Estadísticas (Dashboard) */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
+}
+
+.stat-card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: var(--radius-xl);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+    border: 1px solid #f1f5f9;
+    transition: transform 0.2s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+}
+
+.stat-label {
+    font-size: 0.85rem;
+    color: #64748b;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.5rem;
+}
+
+.stat-value {
+    font-size: 2rem;
+    font-weight: 900;
+    color: var(--dark);
+}
+
+.stat-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+/* Tabla Moderna Admin */
+.table-modern {
+    width: 100%;
+    background: white;
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.table-modern th {
+    background: #f8fafc;
+    padding: 1rem 1.5rem;
+    text-align: left;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #64748b;
+    font-weight: 700;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.table-modern td {
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid #f1f5f9;
+    vertical-align: middle;
+    color: var(--dark);
+    font-weight: 500;
+}
+
+.table-modern tr:last-child td {
+    border-bottom: none;
+}
+
+.table-modern tr:hover td {
+    background-color: #f8fafc;
+}
+
+.img-thumb {
+    width: 50px;
+    height: 50px;
+    border-radius: 10px;
+    object-fit: cover;
+    border: 2px solid white;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.badge-status {
+    padding: 0.35rem 0.85rem;
+    border-radius: 50px;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.badge-active { background: #dcfce7; color: #166534; }
+.badge-inactive { background: #fee2e2; color: #991b1b; }
+
+/* Botones de Acción en Tabla */
+.btn-action-sm {
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.btn-edit { background: #eff6ff; color: var(--primary); }
+.btn-edit:hover { background: var(--primary); color: white; }
+
+.btn-delete { background: #fef2f2; color: #ef4444; }
+.btn-delete:hover { background: #ef4444; color: white; }
+
+/* Responsive Admin */
+@media (max-width: 991px) {
+    .admin-sidebar {
+        width: 80px;
+        padding: 1.5rem 0.5rem;
+    }
+
+    .sidebar-brand span,
+    .sidebar-link span {
+        display: none;
+    }
+
+    .sidebar-link {
+        justify-content: center;
+        padding: 1rem;
+    }
+
+    .admin-main {
+        margin-left: 80px;
+        padding: 1.5rem;
+    }
+
+    .table-modern {
+        display: block;
+        overflow-x: auto;
+    }
+}
+
+@media (max-width: 576px) {
+    .admin-sidebar {
+            position: fixed;
+            bottom: 0;
+            top: auto;
+            left: 0;
+            right: 0;
+            width: 100%;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            padding: 0;
+            background: white; /* BLANCO PURO EN MÓVIL TAMBIÉN */
+            border-top: 1px solid #e2e8f0;
+            border-right: none;
+            z-index: 1000;
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.05); /* SOMBRA HACIA ARRIBA */
+        }
+
+    .sidebar-brand { display: none; }
+
+    .sidebar-menu {
+        display: flex;
+        width: 100%;
+        justify-content: space-around;
+    }
+
+    .sidebar-link {
+        flex-direction: column;
+        gap: 4px;
+        font-size: 0.7rem;
+        margin: 0;
+        padding: 0.5rem;
+    }
+
+    .sidebar-link span { display: block; }
+
+    .admin-main {
+            margin-left: 0;
+            margin-bottom: 80px; /* ESPACIO EXACTO PARA LA BARRA + EXTRA */
+            padding: 1rem;
+            background-color: var(--bg-base);
+            min-height: calc(100vh - 70px); /* ALTURA RESTANTE */
+        }
+
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+    .sidebar-menu li form {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        .sidebar-menu li form button.sidebar-link {
+            padding: 0.5rem;
+            font-size: 0.7rem;
+            color: #ef4444 !important; /* Rojo explícito para móvil */
+        }
+}
+
+/* Tarjetas siempre blancas sobre fondo gris suave */
+.stat-card, .table-modern, .card {
+    background: white !important;
+    border: 1px solid rgba(0,0,0,0.03);
+}
+
+/* =========================================
+   MEJORAS CATÁLOGO (FILTRO + PRECIO)
+   ========================================= */
+
+/* Contenedor del Filtro: Una sola cápsula unificada */
+.search-glass {
+    display: flex;
+    align-items: center;
+    background: white;
+    border-radius: 50px;
+    padding: 6px; /* Espacio interno pequeño */
+    box-shadow: var(--shadow-soft);
+    border: 1px solid #e2e8f0;
+    max-width: 700px;
+    margin: 0 auto;
+    gap: 6px;
+}
+
+/* Input de búsqueda dentro de la cápsula */
+.search-input-clean {
+    flex-grow: 1;
+    border: none;
+    outline: none;
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+    background: transparent;
+    font-family: 'Outfit', sans-serif;
+    min-width: 0; /* Evita desbordamientos en móvil */
+}
+
+/* Select de categorías dentro de la cápsula */
+.filter-select-modern {
+    border: none;
+    outline: none;
+    background: transparent;
+    font-weight: 600;
+    color: var(--dark);
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    border-left: 1px solid #e2e8f0; /* Separador visual sutil */
+    max-width: 160px;
+    appearance: none; /* Quita la flecha fea por defecto */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%2364748b' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    padding-right: 30px;
+}
+
+/* Botón filtrar dentro de la cápsula */
+.btn-filter-capsule {
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    padding: 0.8rem 1.8rem;
+    font-weight: 700;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.btn-filter-capsule:hover {
+    background: var(--primary-dark);
+    transform: scale(1.02);
+}
+
+/* ARREGLO DEL PRECIO: FORZAR UNA SOLA LÍNEA */
+.product-price {
+    font-size: 1.35rem;
+    font-weight: 900;
+    color: var(--primary);
+    white-space: nowrap; /* NUNCA SALTA DE LÍNEA */
+    display: inline-block;
+    line-height: 1.2;
+}
+
+/* Ajustes Responsive para el Filtro en Celular */
+@media (max-width: 576px) {
+    .search-glass {
+        flex-wrap: wrap; /* Permite que se acomode en pantallas muy chicas */
+        padding: 10px;
+        border-radius: 20px;
+    }
+
+    .search-input-clean {
+        width: 100%;
+        border-bottom: 1px solid #f1f5f9;
+        margin-bottom: 8px;
+        padding: 0.8rem 1rem;
+    }
+
+    .filter-select-modern {
+        flex-grow: 1;
+        border-left: none;
+        max-width: none;
+    }
+
+    .btn-filter-capsule {
+        padding: 0.8rem 1.5rem;
+    }
+}
+
+/* Contenedor de la imagen en tarjetas */
+.card-img-container {
+    height: 250px; /* Altura fija para uniformidad */
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    background-color: #ffffff; /* Fondo blanco para que se vea limpio */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* La imagen en sí */
+.card-img-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* <--- CAMBIO CLAVE: Muestra la imagen COMPLETA */
+    padding: 10px; /* Un poco de aire para que no toque los bordes */
+    transition: transform 0.6s ease;
+}
+
+/* Efecto hover suave (opcional) */
+.product-card-premium:hover .card-img-container img {
+    transform: scale(1.05); /* Zoom sutil pero sin cortar */
+}
+
+.detalle-img {
+    width: 100%;
+    height: auto;
+    max-height: 500px;
+    object-fit: contain; /* Completa siempre */
+    display: block;
+}
+
+/* =========================================
+   AJUSTES FINALES PARA CELULAR (INDEX)
+   ========================================= */
+@media (max-width: 991px) {
+    /* Centrar el contenedor de la imagen en el Hero */
+    .hero-container .col-lg-6:last-child {
+        margin-left: auto !important;
+        margin-right: auto !important;
+        text-align: center !important;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    /* Asegurar que la imagen no se salga y esté centrada */
+    .hero-img-wrapper {
+        margin: 0 auto !important;
+        max-width: 90% !important; /* Un poco de aire a los lados */
+        transform: none !important; /* Quita la rotación 3D en móvil para que se vea plana */
+    }
+
+    .hero-img {
+        width: 100% !important;
+        height: auto !important;
+        object-fit: cover !important;
+    }
+}
+
+/* =========================================
+   FIX ESPACIO BLANCO EN MÓVIL (INDEX)
+   ========================================= */
+@media (max-width: 991px) {
+    /* 1. Ajustar altura del Hero para evitar huecos */
+    .hero-container {
+        min-height: auto !important; /* Quita el 100vh fijo */
+        padding-top: 100px !important; /* Espacio para el navbar */
+        padding-bottom: 40px !important;
+        display: block !important; /* Cambia flex por block para apilar mejor */
+    }
+
+    /* 2. Centrar y ajustar texto */
+    .hero-container .col-lg-6:first-child {
+        text-align: center !important;
+        margin-bottom: 2rem !important;
+    }
+
+    /* 3. Ajustar contenedor de imagen */
+    .hero-container .col-lg-6:last-child {
+        margin: 0 auto !important;
+        width: 90% !important;
+        max-width: 400px !important;
+    }
+
+    /* 4. Quitar rotación 3D en móvil (causa espacios raros) */
+    .hero-img-wrapper {
+        transform: none !important;
+        margin: 0 auto !important;
+    }
+
+    /* 5. Asegurar que la imagen no tenga márgenes extraños */
+    .hero-img {
+        border-radius: 24px !important;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1) !important;
+    }
+}
