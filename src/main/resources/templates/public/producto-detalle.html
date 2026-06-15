@@ -86,28 +86,6 @@
     </div>
 </section>
 
-<!-- Relacionados -->
-<section class="py-5 bg-white" th:if="${!#lists.isEmpty(relacionados)}">
-    <div class="container">
-        <h3 class="fw-bold mb-4">También te puede interesar</h3>
-        <div class="row g-4">
-            <div class="col-md-4" th:each="rel : ${relacionados}">
-                <div class="product-card-premium h-100">
-                    <div class="card-img-container">
-                        <img th:src="${rel.imagenUrl}" class="product-img" alt="Rel">
-                    </div>
-                    <div class="card-body-premium">
-                        <h6 class="card-title-modern" th:text="${rel.nombre}">Nom</h6>
-                        <div class="d-flex justify-content-between align-items-center mt-2">
-                            <span class="product-price" style="font-size: 1.1rem;" th:text="'S/ ' + ${#numbers.formatDecimal(rel.precio, 1, 2)}">S/ 0</span>
-                            <a th:href="@{/producto/{id}(id=${rel.id})}" class="btn btn-action btn-sm">Ver</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
 
 <footer class="text-center py-4 text-muted small">&copy;  2026 Desarrollado por Ronaldo  | Inventario & Catálogo</footer>
 
